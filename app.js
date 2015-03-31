@@ -1,5 +1,6 @@
 var http = require('http');
 var soap = require('soap');
+var parseString = require('xml2js').parseString;
 var mysql = require('./mysql');
 
 var tryParseJSON = function (jsonString){
@@ -35,7 +36,16 @@ var myService = {
                         }
                     }, //判断是否为json
                     function(data, cb){
-                        if(data.esbHeader.serviceName == "getOut1002" && data.esbHeader.requestId){
+                        parseString(data.esbHeader, function (err, result) {
+                            if(err){
+                                cb(err);
+                            }else{
+                                cb(null, result, data.payload);
+                            }
+                        });
+                    }, //解析XML
+                    function(esbHeader, payload, cb){
+                        if(esbHeader.serviceName == "getOut1002" && esbHeader.requestId){
                             cb('wrong data');
                         }else{
                             var sql = "INSERT INTO esb_log (requestId) VALUES ('"+data.esbHeader.requestId+"')";
@@ -86,7 +96,11 @@ var myService = {
                         json.errorCode = 2;
                         json.errorDesc = [];
                         for(var i in result){
-                            json.message.push(result[i][0]);;
+                            var item = {
+                                id: result[i][0].order_id,
+                                status: result[i][0].state_code
+                            }
+                            json.message.push(item);
                         }
                     }
                     return JSON.stringify(json);

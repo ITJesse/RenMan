@@ -1,18 +1,8 @@
 var soap = require('soap');
 var url = 'http://localhost:8000/wsdl?wsdl';
 var args = {
-    esbHeader: JSON.stringify({
-        requestId: '123',
-        serviceName: 'abc',
-        serviceOperation: null,
-        serviceVersion: null,
-        key: 'KHJK&*^(KJHJL)'
-    }),
-    payload: JSON.stringify({
-        a: '1',
-        b: '2',
-        c: '3'
-    })
+    esbHeader: '<esbHeader><requestId>550e8400-e29b-41d4-a716-446655440000</requestId><serviceName>getOut1002</serviceName><serviceVersion></serviceVersion><key>f15f044f-dce7-4486-9261-c219cb0517f3</key><requester>EIP</requester><receiver>BJZB</receiver></esbHeader>',
+    payload: '["111","222"]'
 };
 
 soap.createClient(url, function(err, client) {

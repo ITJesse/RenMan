@@ -5,7 +5,8 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "node-mysql": "*",
     "soap": "*",
-    "node-mysql": "*"
+    "xml2js": "^0.4.6"
   }
 }
