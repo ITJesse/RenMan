@@ -103,7 +103,7 @@ var myService = {
                         json.result.message = '参数错误';
                     }
                     else if(err){
-                        // console.log(err);
+                        console.log(err);
                         json.esbHeader.errorCode = 1;
                         json.esbHeader.errorDesc = '内部错误';
                         json.result.returnState = 1;
@@ -126,7 +126,7 @@ var myService = {
                         }
                     }
                     console.log(json);
-                    callback(JSON.stringify(json));
+                    callback('<result>' + JSON.stringify(json) + '</result>');
                 });
             }
         }
