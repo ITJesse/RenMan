@@ -115,13 +115,13 @@ var myService = {
                         json.result.message = [];
                         for(var i in result){
                             // console.log(result[i]);
-                            if(result[i].order_id){
+                            // if(result[i].order_id){
                                 var item = {
-                                    id: result[i].order_id,
-                                    status: result[i].state_code
+                                    id: '111',//result[i].order_id,
+                                    status: '222'//result[i].state_code
                                 }
                                 json.result.message.push(items);
-                            }
+                            // }
                         }
                     }
                     // console.log(json);
