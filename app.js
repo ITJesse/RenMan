@@ -99,21 +99,15 @@ var myService = {
                     if(err == 'wrong data'){
                         json.errorCode = 1;
                         json.errorDesc = '参数错误';
-                        json.result.returnState = 1;
-                        json.result.message = '参数错误';
                     }
                     else if(err){
                         console.log(err);
                         json.esbHeader.errorCode = 1;
                         json.esbHeader.errorDesc = '内部错误';
-                        json.result.returnState = 1;
-                        json.result.message = '内部错误';
                     }
                     else{
                         json.esbHeader.errorCode = '000000';
-                        json.esbHeader.errorDesc = null;
-                        json.result.returnState = 1;
-                        json.result.message = [];
+                        json.esbHeader.errorDesc = [];
                         for(var i in result){
                             // console.log(result[i]);
                             // if(result[i].order_id){
@@ -121,7 +115,7 @@ var myService = {
                                     id: '111',//result[i].order_id,
                                     status: '222'//result[i].state_code
                                 };
-                                json.result.message.push(items);
+                                json.esbHeader.errorDesc.push(item);
                             // }
                         }
                     }
