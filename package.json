@@ -6,6 +6,6 @@
   },
   "dependencies": {
     "soap": "*",
-    "node-mysql": "*",
+    "node-mysql": "*"
   }
 }
