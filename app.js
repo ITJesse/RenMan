@@ -1,6 +1,6 @@
 var http = require('http');
 var soap = require('soap');
-var mysql = require('mysql');
+var mysql = require('./mysql');
 
 var tryParseJSON = function (jsonString){
     try {
