@@ -95,6 +95,7 @@ var myService = {
                 ], function(err, result) {
                     var json = {};
                     json.result = {};
+                    json.esbHeader = {};
                     if(err == 'wrong data'){
                         json.errorCode = 1;
                         json.errorDesc = '参数错误';
@@ -103,14 +104,14 @@ var myService = {
                     }
                     else if(err){
                         // console.log(err);
-                        json.errorCode = 1;
-                        json.errorDesc = '内部错误';
+                        json.esbHeader.errorCode = 1;
+                        json.esbHeader.errorDesc = '内部错误';
                         json.result.returnState = 1;
                         json.result.message = '内部错误';
                     }
                     else{
-                        json.errorCode = '000000';
-                        json.errorDesc = null;
+                        json.esbHeader.errorCode = '000000';
+                        json.esbHeader.errorDesc = null;
                         json.result.returnState = 1;
                         json.result.message = [];
                         for(var i in result){
@@ -119,12 +120,12 @@ var myService = {
                                 var item = {
                                     id: '111',//result[i].order_id,
                                     status: '222'//result[i].state_code
-                                }
+                                };
                                 json.result.message.push(items);
                             // }
                         }
                     }
-                    // console.log(json);
+                    console.log(json);
                     callback(JSON.stringify(json));
                 });
             }
