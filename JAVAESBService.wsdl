@@ -43,7 +43,7 @@
 	</wsdl:binding>
 	<wsdl:service name="ESBInterfaceServiceService">
 		<wsdl:port name="ESBInterfaceServicesPort" binding="esb:ESBInterfaceServiceSoapBinding">
-			<soap:address location="http://localhost:8000/wsdl"/>
+			<soap:address location="http://42.96.200.228:8000/wsdl"/>
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
