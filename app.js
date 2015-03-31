@@ -1,5 +1,6 @@
 var http = require('http');
 var soap = require('soap');
+var async = require('async');
 var parseString = require('xml2js').parseString;
 var mysql = require('./mysql');
 
@@ -23,19 +24,20 @@ var tryParseJSON = function (jsonString){
 var myService = {
     ESBInterfaceServiceService: {
         ESBInterfaceServicesPort: {
-            esbInterfaceService: function (arg) {
-                console.log(arg);
+            esbInterfaceService: function (data, callback) {
+                console.log(data);
                 var task = [];
                 async.waterfall([
+                    // function(cb){
+                    //     var data = tryParseJSON(arg);
+                    //     console.log(data);
+                    //     if(data){
+                    //         cb(null, data);
+                    //     }else{
+                    //         cb('wrong data');
+                    //     }
+                    // }, //判断是否为json
                     function(cb){
-                        var data = tryParseJSON(arg);
-                        if(data){
-                            cb(null, data);
-                        }else{
-                            cb('wrong data');
-                        }
-                    }, //判断是否为json
-                    function(data, cb){
                         parseString(data.esbHeader, function (err, result) {
                             if(err){
                                 cb(err);
@@ -45,30 +47,38 @@ var myService = {
                         });
                     }, //解析XML
                     function(esbHeader, payload, cb){
-                        if(esbHeader.serviceName == "getOut1002" && esbHeader.requestId){
+                        // console.log(esbHeader);
+                        if(esbHeader.esbHeader.serviceName != "getOut1002" || !esbHeader.esbHeader.requestId){
                             cb('wrong data');
                         }else{
-                            var sql = "INSERT INTO esb_log (requestId) VALUES ('"+data.esbHeader.requestId+"')";
+                            var sql = "INSERT INTO esb_log (requestId) VALUES ('"+esbHeader.esbHeader.requestId[0]+"')";
                             mysql.query(sql, function(err) {
                                 if(err){
                                     cb(err);
                                 }else{
-                                    cb(null, data.payload);
+                                    cb(null, payload);
                                 }
                             });
                         }
                     }, //判断是否为正常的esb报文并记录
+                    // function(payload, cb){
+                    //     var data = tryParseJSON(payload);
+                    //     if(data){
+                    //         cb(null, data);
+                    //     }else{
+                    //         cb('wrong data');
+                    //     }
+                    // }, //判断是否为json
                     function(data, cb){
-                        for(var i in data){
-            				//console.log(list[i]);
+                        var id = JSON.parse(data);
+                        for(var i in id){
             				(function(x){
             					task.push(function(cb2){
-            						console.log(list[x]);
-            						mysql.query("SELECT order_id, state_code FROM ticket WHERE order_id = '"+data[i].orderNo+"'", function(err, rows){
+            						mysql.query("SELECT order_id, state_code FROM ticket WHERE order_id = '"+id[i]+"'", function(err, rows){
             							if(err){
             								cb2(err);
             							}else{
-            								cb2(null, rows[0]);
+            								cb2(null, rows);
             							}
             						});
             					});
@@ -82,28 +92,40 @@ var myService = {
             				cb(null, result);
             			});
                     } //并行查询所有记录
-                ], function(cb, result) {
+                ], function(err, result) {
                     var json = {};
+                    json.result = {};
                     if(err == 'wrong data'){
                         json.errorCode = 1;
                         json.errorDesc = '参数错误';
+                        json.result.returnState = 1;
+                        json.result.message = '参数错误';
                     }
                     else if(err){
+                        // console.log(err);
                         json.errorCode = 1;
                         json.errorDesc = '内部错误';
+                        json.result.returnState = 1;
+                        json.result.message = '内部错误';
                     }
                     else{
-                        json.errorCode = 2;
-                        json.errorDesc = [];
+                        json.errorCode = '000000';
+                        json.errorDesc = null;
+                        json.result.returnState = 1;
+                        json.result.message = [];
                         for(var i in result){
-                            var item = {
-                                id: result[i][0].order_id,
-                                status: result[i][0].state_code
+                            // console.log(result[i]);
+                            if(result[i].order_id){
+                                var item = {
+                                    id: result[i].order_id,
+                                    status: result[i].state_code
+                                }
+                                json.result.message.push(items);
                             }
-                            json.message.push(item);
                         }
                     }
-                    return JSON.stringify(json);
+                    // console.log(json);
+                    callback(JSON.stringify(json));
                 });
             }
         }
@@ -117,8 +139,8 @@ var server = http.createServer(function(request,response) {
 
 server.listen(8000);
 
-server.log = function(type, data) {
-  console.log(data);
-};
+// server.log = function(type, data) {
+//   console.log(data);
+// };
 
 soap.listen(server, '/wsdl', myService, xml);

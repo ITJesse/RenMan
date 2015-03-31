@@ -21,7 +21,7 @@ exports.end = function(){
 exports.query = function(sql, callback){
 	//connection.connect();
 	connection.query(sql, function(err, rows, fields) {
-		if(db_config.mysql.debug) console.log("Execute SQL:" + sql);
+		if(db_config.debug) console.log("Execute SQL:" + sql);
 		if(err) return callback(err);
 		//connection.end();
 		return callback(err, rows, fields);
