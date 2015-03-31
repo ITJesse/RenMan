@@ -35,7 +35,7 @@ var myService = {
                         }
                     }, //判断是否为json
                     function(data, cb){
-                        if(data.esbHeader.serviceName == "getOut1002" && data.esbHeader.key == "KHJK&*^(KJHJL)" && data.esbHeader.requestId){
+                        if(data.esbHeader.serviceName == "getOut1002" && data.esbHeader.requestId){
                             cb('wrong data');
                         }else{
                             var sql = "INSERT INTO esb_log (requestId) VALUES ('"+data.esbHeader.requestId+"')";
