@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "node-mysql": "*",
-    "soap": "*",
     "xml2js": "^0.4.6",
     "async": "*"
   }

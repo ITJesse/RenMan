@@ -1,5 +1,5 @@
 var http = require('http');
-var soap = require('soap');
+var soap = require('./soap');
 var async = require('async');
 var parseString = require('xml2js').parseString;
 var mysql = require('./mysql');
