@@ -108,13 +108,13 @@ var myService = {
                         json.errorDesc = [];
                         for(var i in result){
                             // console.log(result[i]);
-                            // if(result[i].order_id){
+                            if(result[i].order_id){
                                 var item = {
-                                    id: '111',//result[i].order_id,
-                                    status: '222'//result[i].state_code
+                                    id: result[i].order_id,
+                                    status: result[i].state_code
                                 };
                                 json.errorDesc.push(item);
-                            // }
+                            }
                         }
                     }
                     console.log(json);
