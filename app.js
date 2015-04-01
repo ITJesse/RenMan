@@ -94,15 +94,14 @@ var myService = {
                     } //并行查询所有记录
                 ], function(err, result) {
                     var json = {};
-                    json.result = {};
                     json.esbHeader = {};
                     if(err == 'wrong data'){
-                        json.errorCode = 1;
+                        json.errorCode = '1';
                         json.errorDesc = '参数错误';
                     }
                     else if(err){
                         console.log(err);
-                        json.esbHeader.errorCode = 1;
+                        json.esbHeader.errorCode = '1';
                         json.esbHeader.errorDesc = '内部错误';
                     }
                     else{
