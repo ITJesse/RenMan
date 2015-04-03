@@ -45,6 +45,7 @@ var myService = {
                                 cb(null, result, data.payload);
                             }
                         });
+                        // cb(null, data.esbHeader, data.payload);
                     }, //解析XML
                     function(esbHeader, payload, cb){
                         // console.log(esbHeader);
@@ -106,11 +107,12 @@ var myService = {
                     else{
                         json.errorCode = '000000';
                         json.errorDesc = [];
+                        // console.log(result);
                         for(var i in result){
                             // console.log(result[i]);
-                            if(result[i].order_id){
+                            if(result[i].ticket_number){
                                 var item = {
-                                    id: result[i].order_id,
+                                    id: result[i].ticket_number,
                                     status: result[i].state_code
                                 };
                                 json.errorDesc.push(item);
