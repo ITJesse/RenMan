@@ -74,7 +74,7 @@ var myService = {
                         for(var i in id){
             				(function(x){
             					task.push(function(cb2){
-            						mysql.query("SELECT order_id, state_code FROM ticket WHERE order_id = '"+id[i]+"'", function(err, rows){
+            						mysql.query("SELECT ticket_number, state_code FROM ticket WHERE ticket_number = '"+id[i]+"'", function(err, rows){
             							if(err){
             								cb2(err);
             							}else{
