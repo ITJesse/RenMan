@@ -110,10 +110,10 @@ var myService = {
                         // console.log(result);
                         for(var i in result){
                             // console.log(result[i]);
-                            if(result[i].ticket_number){
+                            if(result[i][0].ticket_number){
                                 var item = {
-                                    id: result[i].ticket_number,
-                                    status: result[i].state_code
+                                    id: result[i][0].ticket_number,
+                                    status: result[i][0].state_code
                                 };
                                 json.errorDesc.push(item);
                             }
