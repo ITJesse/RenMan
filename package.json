@@ -7,6 +7,7 @@
   "dependencies": {
     "node-mysql": "*",
     "xml2js": "^0.4.6",
-    "async": "*"
+    "async": "*",
+    "mysql": "*"
   }
 }
